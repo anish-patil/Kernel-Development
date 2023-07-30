@@ -1,9 +1,16 @@
 ORG 0
 BITS 16
 
-jmp 0x7c0:start
+;BPB expects short jump so we can trick it to write code in fake BPB created with NULL bytes
+_start:
+    jmp short start
+    nop
+times 33 db 0 ;Why 33 bytes; to fill BIOS parameter block(BPB) with NULL bytes
 
 start:
+    jmp 0x7c0:step2 ;makes our CS to become 0x7c0 since our origin is 0
+
+step2:
 
     cli ;Disables Interrupts
     mov ax,0x7c0
