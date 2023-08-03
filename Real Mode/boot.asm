@@ -18,12 +18,6 @@ handle_zero:
     int 0x10
     iret
 
-handle_one:
-    mov ah,0eh
-    mov al,'R'
-    mov bx,0x00
-    int 0x10
-    iret
 
 step2:
 
@@ -36,18 +30,28 @@ step2:
     mov sp,0x7c00
     sti ;Enables Interrupts
 
-    mov word[ss:0x00], handle_zero
-    mov word[ss:0x02], 0x7c0
-
-    mov word[ss:0x04], handle_one ;Offset
-    mov word[ss:0x06], 0x7c0      ;Segment
+    mov ah,02h  ;Read Sector Command
+    mov al,1    ;One Sector to read
+    mov ch,0    ;Cylinder number low eight bits
+    mov cl,2    ;Read Sector 2
+    mov dh,0    ;head Number(using CHS way)
+    mov bx,buffer
+    int 0x13
+    jc error
+    jmp $
+    
+    mov word[ss:0x00], handle_zero;Offset
+    mov word[ss:0x02], 0x7c0        ;Segment
    
-    int 1;Calling our own made interrupt
+    int 0;Calling our own made interrupt
 
     mov si, message
     call print
     jmp $
-
+error: 
+    mov si, error_message
+    call print
+    jmp $
 print: 
     mov bx,0
 .loop:
@@ -65,7 +69,13 @@ printChar:
     int 0x10
     ret
 
+error_message:
+    db 'Failed to Load Sector',0
+
 message: db 'Hello World!', 0
 
 times 510 -($ - $$) db 0
 dw 0xAA55
+
+
+buffer:
