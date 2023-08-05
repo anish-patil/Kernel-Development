@@ -10,6 +10,7 @@ times 33 db 0 ;Why 33 bytes; to fill BIOS parameter block(BPB) with NULL bytes
 start:
     jmp 0x7c0:step2 ;makes our CS to become 0x7c0 since our origin is 0
 
+
 ;Making our own interrupts
 handle_zero: 
     mov ah,0eh
@@ -40,7 +41,7 @@ step2:
     jc error
     jmp $
     
-    mov word[ss:0x00], handle_zero;Offset
+    mov word[ss:0x00], handle_zero  ;Offset
     mov word[ss:0x02], 0x7c0        ;Segment
    
     int 0;Calling our own made interrupt
