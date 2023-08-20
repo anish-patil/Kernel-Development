@@ -1,7 +1,7 @@
 ORG 0x7c00
 BITS 16
 
-CODE_SEG equ gdt_code - gdt_start
+CODE_SEG equ gdt_code - gdt_start   ; Calculates the address 
 DATA_SEG equ gdt_data - gdt_start
 
 ;BPB expects short jump so we can trick it to write code in fake BPB created with NULL bytes

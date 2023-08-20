@@ -32,9 +32,7 @@ Creating a cross-compiler for compiling C code to run in protected mode on a dif
 [Binutils](https://www.gnu.org/software/binutils/)
 
 #### Download-GCC
-Go to the link below and click on 
 
-[GCC](https://www.gnu.org/software/gcc/mirrors.html)
+[GCC](https://ftp.lip6.fr/pub/gcc/)
 
-"France (no snapshots): (ftp.lip6.fr), thanks to ftpmaint@lip6.fr"
-remove 'ftp' protocol and add instead 'https'
+
