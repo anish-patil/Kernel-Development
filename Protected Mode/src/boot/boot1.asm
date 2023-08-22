@@ -5,13 +5,13 @@ CODE_SEG equ gdt_code - gdt_start   ; Calculates the address
 DATA_SEG equ gdt_data - gdt_start
 
 ;BPB expects short jump so we can trick it to write code in fake BPB created with NULL bytes
-_start:
-    jmp short start
-    nop
+jmp short start
+nop
+
 times 33 db 0 ;Why 33 bytes; to fill BIOS parameter block(BPB) with NULL bytes
 
 start:
-    jmp 0:step2 ;makes our CS to become 0x7c0 since our origin is 0
+    jmp 0:step2 ;makes our CS to become 0 since our origin is 0x7c00
 
 
 step2:
@@ -57,28 +57,75 @@ gdt_data:   ;DS SS ES FS GS linked to this
 
 gdt_end:
 
-gdt_descriptor:
+gdt_descriptor: 
     dw gdt_end - gdt_start-1
     dd gdt_start
 
 [BITS 32]
 load32:
-;Setting up all register in protected mode
-    mov ax,DATA_SEG
-    mov ds,ax
-    mov es,ax
-    mov fs,ax
-    mov gs,ax
-    mov ss,ax
-    mov ebp,0x00200000    ;ebp- Base pointer
-    mov esp,ebp
+    mov eax,1       ; represents the starting sector
+    mov ecx,100     ; total no of sectors to load
+    mov edi,0x0100000   ;=1MB
+    call ata_lba_read
+    jmp CODE_SEG:0x0100000
 
-    ;Enabling A20 Line to access above 1MB limit
-    in al,0x92
-    or al,2
-    out 0x92,al
+ata_lba_read:
+    mov ebx,eax ;Backup the LBA
+    ; Send the highest 8 bits of the lba to hard disk controller
+    shr eax,24  ; Shift 24 bits to right
+    or eax,0xE0 ; Selects the master drive
+    mov dx,0x1F6
+    out dx,al
+    ;Finished sending the highest 8 bits to the lba
 
-    jmp $
+    ;Send the total sectors to read
+    mov eax,ecx
+    mov dx,0x1F2
+    out dx,al
+    ;Finished sending the total sectors to read
+    
+    ;Send more bits of the LBA
+    mov eax,ebx ;Restore the backup LBA
+    mov dx,0x1F3
+    out dx,al
+    ; FInishe Sendidng more bits to the LBA
+
+    ;Finished sending more bits to the lba
+    mov dx,0x1F4
+    mov eax,ebx ;Restore Backup LBA
+    shr eax,8
+    out dx,al
+    ;Finished sending more bits to the LBA
+
+    ;Send upper 16 bits of the LBA
+    mov dx,0x1F5
+    mov eax,ebx
+    shr eax,16
+    out dx,al 
+    ;Finished sending upper 16 bits of the LBA
+
+    mov dx, 0x1F7
+    mov al, 0x20 
+    out dx, al
+
+    ; Read all the sectors into the memory
+.next_sector:
+    push ecx
+
+.try_again:
+    mov dx,0x1F7
+    in al,dx
+    test al,8
+    jz .try_again
+
+; We need to read 256 words at a time
+    mov ecx,256
+    mov dx,0x1F0
+    rep insw    ;do the insw instruction 256 times which reads 256 words i.e 512 bytes i.e 1 sector
+    pop ecx
+    loop .next_sector
+    ; End of reading sectors into the memory
+    ret
 
 times 510 -($ - $$) db 0
-dw 0xAA55
+dw 0xAA55   
