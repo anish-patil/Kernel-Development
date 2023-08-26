@@ -22,7 +22,7 @@ The Global Descriptor Table (GDT) is a data structure used in x86-based computer
 The Global Descriptor Table (GDT) is like a special book that lists out all these rules for each section of the memory. It's like a big instruction manual that tells the computer's brain (the processor) how to handle different parts of memory.
 
 ### ATA_LBA_READ
-Here's how the ata_lba_read function works and how it might be connected to kernel development:
+Here's how the ***ata_lba_read*** function works and how it might be connected to kernel development:
 
    - **Initialization and Setup:**
         The function starts by backing up the value in the eax register to ebx for later restoration.
@@ -33,10 +33,10 @@ Here's how the ata_lba_read function works and how it might be connected to kern
         The lower bits of the LBA, the total number of sectors to read, and more bits of the LBA are sent to their respective ports to inform the storage device about the read operation.
 
    - **Initiating Read Operation:**
-        The _0x1F7_ port is used to send a command that initiates the read operation (mov al, 0x20 and out dx, al). This tells the storage device to start reading data sectors.
+        The _0x1F7_ port is used to send a command that initiates the read operation (```mov al, 0x20``` and ```out dx, al```). This tells the storage device to start reading data sectors.
 
    - **Waiting for Device to Be Ready:**
-        A loop labeled .try_again repeatedly checks the status of the storage device using the in al, dx instruction. The status byte's "busy" bit is tested to ensure the device is ready for the next operation.
+        A loop labeled ```.try_again``` repeatedly checks the status of the storage device using the in al, dx instruction. The status byte's "busy" bit is tested to ensure the device is ready for the next operation.
 
    - **Reading Data Sectors:**
         After the device is ready, the code uses insw to read a word (16 bits) of data from the data port (_0x1F0_) of the storage device into memory. This is repeated in a loop to read multiple sectors.
