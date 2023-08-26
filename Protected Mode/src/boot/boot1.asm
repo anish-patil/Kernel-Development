@@ -74,7 +74,7 @@ ata_lba_read:
     ; Send the highest 8 bits of the lba to hard disk controller
     shr eax,24  ; Shift 24 bits to right
     or eax,0xE0 ; Selects the master drive
-    mov dx,0x1F6
+    mov dx,0x1F6   ; Dx is set to an I/O port
     out dx,al
     ;Finished sending the highest 8 bits to the lba
 
@@ -104,15 +104,17 @@ ata_lba_read:
     out dx,al 
     ;Finished sending upper 16 bits of the LBA
 
+    ;It is ready to start reading
     mov dx, 0x1F7
     mov al, 0x20 
     out dx, al
 
-    ; Read all the sectors into the memory
+; Read all the sectors into the memory
 .next_sector:
     push ecx
 
 .try_again:
+;Checking if driver is busy or not
     mov dx,0x1F7
     in al,dx
     test al,8
