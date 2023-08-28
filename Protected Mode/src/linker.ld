@@ -3,24 +3,30 @@ OUTPUT_FORMAT(binary)
 SECTIONS
 {
     . = 1M;
-    .text :
+    /* For Code*/
+    .text : ALIGN(4096) /*ALIGN(4096) specifies that the section should be aligned to a 4096-byte (4 KB) boundary.*/
     {
         *(.text)
     } 
-
-    .rodata :
+    /*For read only data*/
+    .rodata : ALIGN(4096)
     {
         *(.rodata)
     }
-
-    .data :
+    /*For initialised data*/
+    .data : ALIGN(4096)
     {
         *(.data)
     }
-    
-    .bss :
+    /*for uninitialised data, variables that arent explicitly initialised*/
+    .bss : ALIGN(4096)
     {
         *(COMMON)
         *(.bss)
     }
-}
+
+    .asm : ALIGN(4096)
+    {
+        *(.asm)
+    }
+}   
