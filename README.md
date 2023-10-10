@@ -16,7 +16,6 @@ Kernel development refers to the process of creating and maintaining the core co
 ## Installation for Real Mode Development
 
 1. Installing NASM
-
    ```terminal
    sudo apt install nasm
    ```
