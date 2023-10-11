@@ -46,10 +46,9 @@ Take the segment multiply by 16 and add the offset.
 
 Example - Segment 0x7cf offset 0x0F.
 
-```math
-0x7cf=1999
-1999*16=31984
-31984=0x7cf0
-0x7cf0+0x0f=0x7cff
-```
+1. `0x7cf` in hexadecimal = 1999 in decimal.
+2. When you multiply 1999 by 16, you get 31984 in decimal.
+3. 31984 in decimal = `0x7cf0` in hexadecimal.
+4. If you add `0x0f` (15 in decimal) to `0x7cf0`, you get `0x7cff`.
+
 ##  Interrupt Vector Table
