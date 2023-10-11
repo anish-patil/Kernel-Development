@@ -56,7 +56,7 @@ error:
 print: 
     mov bx,0
 .loop:
-    lodsb
+    lodsb   ; DS:SI
     cmp al,0
     je .done
     call printChar
