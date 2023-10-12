@@ -13,6 +13,24 @@ Kernel development refers to the process of creating and maintaining the core co
 - BIOS instructs to jump to this absolute boot address and begin executing the OS bootloader.
 - BIOS basically contains routines to execute our bootloader which in turn executes our kernel, it is basically a kernel in itself which operates in 16bit mode also known as REAL MODE.
 
+## Writing bootloader to our USB stick
+
+1. Go to your repective directory where the code is written
+
+2. In terminal, to check all the disks in system
+
+   ```terminal
+   sudo fdisk -l
+   ```
+
+3. Select /dev/sdb as that is your USB stick
+
+   ```terminal
+   sudo dd if=./boot.bin of=/dev/sdb
+   ```
+
+4. Plug it into your machine and Enter into your BIOS and boot from USB
+
 ## Installation for Real Mode Development
 
 1. Install NASM
