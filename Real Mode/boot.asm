@@ -41,7 +41,7 @@ step2:
     jc error
     jmp $
     
-    mov word[ss:0x00], handle_zero  ;Offset
+    mov word[ss:0x00], handle_zero  ;Offset if SS not mentioned, it gets defaulted to DS which is right now pointing to 0x7c00 
     mov word[ss:0x02], 0x7c0        ;Segment
    
     int 0;Calling our own made interrupt
