@@ -52,3 +52,16 @@ Example - Segment 0x7cf offset 0x0F.
 4. If you add `0x0f` (15 in decimal) to `0x7cf0`, you get `0x7cff`.
 
 ##  Interrupt Vector Table
+
+Interrupts are like subroutines but you don't need to know the memory address to invoke them.
+
+When you invoke an interrupt the processor get interrupted, old state gets saved and pushed to stack.
+
+So the interrupt vector table describes where these interrupt are in the memory 
+
+- We have 256 interrupt handler
+- Each entry in table is 4 bytes
+- 1st 2 bytes of an entry is the offset in memory and the next 2 bytes are segment in memory.
+- Interrupts are in Numerical order.
+
+![IVT Image](https://github.com/anish-patil/Kernel-Development/assets/101693650/d6026d65-4dc7-41a2-be50-810e5ef32484)
