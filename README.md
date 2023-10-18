@@ -2,7 +2,7 @@
 
 Kernel development refers to the process of creating and maintaining the core component of an operating system known as the kernel. The kernel is a piece of software that acts as a bridge between the hardware and the user-level applications, enabling them to communicate and interact with the computer's hardware resources such as memory, processors, and devices.
 
-## Steps to a Booted System
+## Steps to Booted System
 
 - BIOS is executed directly from ROM.
 - CPU excutes instruction directly from the BIOS's ROM.
