@@ -69,3 +69,9 @@ So the interrupt vector table describes where these interrupts are in the memory
 [More about Interrupts and Exceptions](https://wiki.osdev.org/Exceptions)
 
 ## Disk Access
+
+**FILES DO NOT EXIST**
+
+Files are actually kernel OS concept, On disk you have this special file system data structure which knows how to read it.
+
+The disk itself holds blocks of data Sectors which is how the data is held and read from.
