@@ -75,3 +75,5 @@ So the interrupt vector table describes where these interrupts are in the memory
 Files are actually kernel OS concept, On disk you have this special file system data structure which knows how to read it.
 
 The disk itself holds blocks of data Sectors which is how the data is held and read from.
+
+![CHS](https://github.com/anish-patil/MPU6050-with-Arduino-and-Processing/assets/101693650/bd5b16f1-d4fb-47a7-beec-9bf7974dc1b3)
