@@ -10,14 +10,13 @@ times 33 db 0 ;Why 33 bytes; to fill BIOS parameter block(BPB) with NULL bytes
 start:
     jmp 0x7c0:step2 ;makes our CS to become 0x7c0 since our origin is 0
 
-
 ;Making our own interrupts
-handle_zero: 
-    mov ah,0eh
-    mov al,'C'
-    mov bx,0x00
-    int 0x10
-    iret
+; handle_zero: 
+; mov ah,0eh
+; mov al,'C'
+; mov bx,0x00
+; int 0x10
+; iret
 
 
 step2:
@@ -39,16 +38,15 @@ step2:
     mov bx,buffer
     int 0x13
     jc error
-    jmp $
-    
-    mov word[ss:0x00], handle_zero  ;Offset if SS not mentioned, it gets defaulted to DS which is right now pointing to 0x7c00 
-    mov word[ss:0x02], 0x7c0        ;Segment
-   
-    int 0;Calling our own made interrupt
-
-    mov si, message
+    mov si,buffer
     call print
     jmp $
+    
+    ; mov word[ss:0x00], handle_zero  ;Offset if SS not mentioned, it gets defaulted to DS which is right now pointing to 0x7c00 
+    ; mov word[ss:0x02], 0x7c0        ;Segment
+    ; int 0;Calling our own made interrupt
+    ; mov si, message
+    ; call print
 error: 
     mov si, error_message
     call print
@@ -73,7 +71,7 @@ printChar:
 error_message:
     db 'Failed to Load Sector',0
 
-message: db 'Hello World!', 0
+; message: db 'Hello World!', 0
 
 times 510 -($ - $$) db 0
 dw 0xAA55

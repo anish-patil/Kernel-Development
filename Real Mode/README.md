@@ -6,7 +6,7 @@ Real mode is a CPU operating mode found in x86-based computer systems. In this m
 
 To compile the assembly file in initial stages
 
-     nasm -f bin ./boot.asm -o ./boot.bin
+    nasm -f bin ./boot.asm -o ./boot.bin
 
 To see disassembly output
 
